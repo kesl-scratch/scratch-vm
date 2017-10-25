@@ -373,11 +373,16 @@ class Runtime extends EventEmitter {
      * @todo Prefix opcodes with package name.
      * @private
      */
-    _registerBlockPackages () {
-        for (const packageName in defaultBlockPackages) {
-            if (defaultBlockPackages.hasOwnProperty(packageName)) {
+    _registerBlockPackages (packageToLoad) {//ysm
+
+        if(packageToLoad==null) {
+          packageToLoad = defaultBlockPackages;
+        }
+
+        for (const packageName in packageToLoad) {
+            if (packageToLoad.hasOwnProperty(packageName)) {
                 // @todo pass a different runtime depending on package privilege?
-                const packageObject = new (defaultBlockPackages[packageName])(this);
+                const packageObject = new (packageToLoad[packageName])(this);
                 // Collect primitives from package.
                 if (packageObject.getPrimitives) {
                     const packagePrimitives = packageObject.getPrimitives();
